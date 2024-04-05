@@ -90,7 +90,7 @@ class GithubMonitorPlugin(MonitorPlugin):
         if last_modified:
             headers.update({"If-Modified-Since": str(last_modified)})
 
-        resp = requests.get(request_url, headers=headers)
+        resp = requests.get(request_url, headers=headers, timeout=60)
 
         if resp.status_code == 304:
             # no updates
