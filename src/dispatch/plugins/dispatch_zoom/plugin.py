@@ -6,7 +6,6 @@
 .. moduleauthor:: Will Bengtson <wbengtson@hashicorp.com>
 """
 import logging
-import random
 from typing import List
 
 from dispatch.decorators import apply, counter, timer
@@ -15,6 +14,7 @@ from dispatch.plugins.bases import ConferencePlugin
 
 from .config import ZoomConfiguration
 from .client import ZoomClient
+import secrets
 
 log = logging.getLogger(__name__)
 
@@ -24,7 +24,7 @@ def gen_conference_challenge(length: int):
     if length > 10:
         length = 10
     field = "abcdefghijklmnopqrstuvwxyz01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-    return "".join(random.sample(field, length))
+    return "".join(secrets.SystemRandom().sample(field, length))
 
 
 def delete_meeting(client, event_id: int):
