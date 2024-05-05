@@ -10,6 +10,7 @@ from dispatch.plugin.models import PluginInstance
 
 from .extensions import configure_extensions
 from .scheduler import scheduler
+from security import safe_command
 
 os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
 
@@ -773,8 +774,7 @@ def run_server(log_level):
         windows_cmds = ["cmd", "/c"]
         default_cmds = ["npm", "run", "serve"]
         cmds = windows_cmds + default_cmds if is_windows else default_cmds
-        p = Popen(
-            cmds,
+        p = safe_command.run(Popen, cmds,
             cwd=os.path.join("src", "dispatch", "static", "dispatch"),
             env=envvars,
         )

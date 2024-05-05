@@ -9,6 +9,7 @@ import json
 import subprocess
 from time import sleep
 from typing import NoReturn
+from security import safe_command
 
 
 @click.group()
@@ -18,7 +19,7 @@ def cli():
 
 def run_command(command: str) -> str:
     """Utility function to run commands."""
-    process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+    process = safe_command.run(subprocess.Popen, command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
     output, _ = process.communicate()
     return output.decode("utf-8")
 
