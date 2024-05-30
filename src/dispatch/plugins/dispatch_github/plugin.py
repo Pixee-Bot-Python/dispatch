@@ -8,7 +8,6 @@ import platform
 import re
 from re import Pattern
 import sys
-import requests
 from datetime import datetime
 from tenacity import TryAgain, retry, stop_after_attempt, wait_fixed
 
@@ -17,6 +16,7 @@ from dispatch.config import BaseConfigurationModel
 from dispatch.decorators import apply, counter, timer
 from dispatch.plugins import dispatch_github as github_plugin
 from dispatch.plugins.bases.monitor import MonitorPlugin
+from security import safe_requests
 
 
 class GithubConfiguration(BaseConfigurationModel):
@@ -90,7 +90,7 @@ class GithubMonitorPlugin(MonitorPlugin):
         if last_modified:
             headers.update({"If-Modified-Since": str(last_modified)})
 
-        resp = requests.get(request_url, headers=headers)
+        resp = safe_requests.get(request_url, headers=headers)
 
         if resp.status_code == 304:
             # no updates

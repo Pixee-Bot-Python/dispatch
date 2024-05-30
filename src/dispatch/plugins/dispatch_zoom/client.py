@@ -3,6 +3,7 @@ import time
 
 from jose import jwt
 import requests
+from security import safe_requests
 
 
 API_BASE_URI = "https://api.zoom.us/v2"
@@ -25,8 +26,7 @@ class ZoomClient:
         return headers
 
     def get(self, path, params=None):
-        return requests.get(
-            "{}/{}".format(API_BASE_URI, path),
+        return safe_requests.get("{}/{}".format(API_BASE_URI, path),
             params=params,
             headers=self.headers,
             timeout=self.timeout,

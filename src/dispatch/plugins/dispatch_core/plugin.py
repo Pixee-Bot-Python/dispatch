@@ -7,8 +7,6 @@
 import base64
 import json
 import logging
-
-import requests
 from fastapi import HTTPException
 from fastapi.security.utils import get_authorization_scheme_param
 from jose import JWTError, jwt
@@ -46,6 +44,7 @@ from dispatch.service import service as service_service
 from dispatch.service.models import Service, ServiceRead
 from dispatch.team import service as team_service
 from dispatch.team.models import TeamContact, TeamContactRead
+from security import safe_requests
 
 log = logging.getLogger(__name__)
 
@@ -107,7 +106,7 @@ class PKCEAuthProviderPlugin(AuthenticationProviderPlugin):
         key_info = json.loads(base64.b64decode(token.split(".")[0] + "=========").decode("utf-8"))
 
         # Grab all possible keys to account for key rotation and find the right key
-        keys = requests.get(DISPATCH_AUTHENTICATION_PROVIDER_PKCE_JWKS).json()["keys"]
+        keys = safe_requests.get(DISPATCH_AUTHENTICATION_PROVIDER_PKCE_JWKS).json()["keys"]
         for potential_key in keys:
             if potential_key["kid"] == key_info["kid"]:
                 key = potential_key

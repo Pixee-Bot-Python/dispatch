@@ -2,6 +2,7 @@ import json
 import requests
 
 from dispatch.exceptions import DispatchPluginException
+from security import safe_requests
 
 
 def get_auth(api_key: str) -> dict:
@@ -10,8 +11,7 @@ def get_auth(api_key: str) -> dict:
 
 def get_oncall(api_key: str, team_id: str) -> str:
     schedule_api = "https://api.opsgenie.com/v2/schedules"
-    response = requests.get(
-        f"{schedule_api}/{team_id}/on-calls",
+    response = safe_requests.get(f"{schedule_api}/{team_id}/on-calls",
         headers=get_auth(api_key),
     )
 
