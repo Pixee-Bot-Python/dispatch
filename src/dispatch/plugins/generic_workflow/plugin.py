@@ -40,6 +40,7 @@ from dispatch.config import BaseConfigurationModel
 from dispatch.decorators import apply, counter, timer
 from dispatch.plugins import generic_workflow as generic_workflow_plugin
 from dispatch.plugins.bases import WorkflowPlugin
+from security import safe_requests
 
 
 class GenericWorkflowConfiguration(BaseConfigurationModel):
@@ -92,7 +93,7 @@ class GenericWorkflowPlugin(WorkflowPlugin):
             "workflow_id": workflow_id,
             "tags": tags,
         }
-        resp = requests.get(api_url, params=fields, headers=headers)
+        resp = safe_requests.get(api_url, params=fields, headers=headers)
 
         if resp.status_code in [429, 500, 502, 503, 504]:
             raise TryAgain
