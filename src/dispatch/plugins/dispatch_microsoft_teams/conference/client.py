@@ -67,7 +67,7 @@ class MSTeamsClient:
                 url=f"https://graph.microsoft.com/v1.0/users/{self.user_id}/onlineMeetings",
                 headers={"Authorization": "Bearer " + result["access_token"]},
                 json=data,
-            ).json()
+            timeout=60).json()
             logger.info("Graph API call result: ")
             logger.info(json.dumps(graph_data, indent=2))
             return graph_data

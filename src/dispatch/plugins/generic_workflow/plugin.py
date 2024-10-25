@@ -92,7 +92,7 @@ class GenericWorkflowPlugin(WorkflowPlugin):
             "workflow_id": workflow_id,
             "tags": tags,
         }
-        resp = requests.get(api_url, params=fields, headers=headers)
+        resp = requests.get(api_url, params=fields, headers=headers, timeout=60)
 
         if resp.status_code in [429, 500, 502, 503, 504]:
             raise TryAgain
@@ -108,7 +108,7 @@ class GenericWorkflowPlugin(WorkflowPlugin):
             "Content-Type": "application/json",
             "Authorization": self.configuration.auth_header.get_secret_value(),
         }
-        resp = requests.post(api_url, data=json.dumps(obj), headers=headers)
+        resp = requests.post(api_url, data=json.dumps(obj), headers=headers, timeout=60)
 
         if resp.status_code in [429, 500, 502, 503, 504]:
             raise TryAgain
