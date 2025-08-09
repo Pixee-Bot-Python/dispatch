@@ -133,7 +133,7 @@ class ConfluencePagePlugin(StoragePlugin):
                 self.configuration.username, self.configuration.password.get_secret_value()
             )
             headers = {"Accept": "application/json"}
-            response = requests.request("PUT", url, headers=headers, auth=auth)
+            response = requests.request("PUT", url, headers=headers, auth=auth, timeout=60)
             return response
         except Exception as e:
             logger.error(f"Exception happened while moving page: {e}")

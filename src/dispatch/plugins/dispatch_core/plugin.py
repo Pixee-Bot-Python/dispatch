@@ -107,7 +107,7 @@ class PKCEAuthProviderPlugin(AuthenticationProviderPlugin):
         key_info = json.loads(base64.b64decode(token.split(".")[0] + "=========").decode("utf-8"))
 
         # Grab all possible keys to account for key rotation and find the right key
-        keys = requests.get(DISPATCH_AUTHENTICATION_PROVIDER_PKCE_JWKS).json()["keys"]
+        keys = requests.get(DISPATCH_AUTHENTICATION_PROVIDER_PKCE_JWKS, timeout=60).json()["keys"]
         for potential_key in keys:
             if potential_key["kid"] == key_info["kid"]:
                 key = potential_key
