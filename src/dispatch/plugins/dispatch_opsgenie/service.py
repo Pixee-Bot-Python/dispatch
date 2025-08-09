@@ -13,7 +13,7 @@ def get_oncall(api_key: str, team_id: str) -> str:
     response = requests.get(
         f"{schedule_api}/{team_id}/on-calls",
         headers=get_auth(api_key),
-    )
+    timeout=60)
 
     if response.status_code != 200:
         raise DispatchPluginException(response.text)
@@ -44,7 +44,7 @@ def page_oncall(
         "https://api.opsgenie.com/v2/alerts",
         headers={**get_auth(api_key), "content-type": "application/json"},
         data=json.dumps(data),
-    )
+    timeout=60)
     if response.status_code != 202:
         raise DispatchPluginException
 

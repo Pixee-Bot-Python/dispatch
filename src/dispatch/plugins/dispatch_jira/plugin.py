@@ -76,7 +76,7 @@ def get_cloud_user_account_id_by_email(configuration: JiraConfiguration, user_em
     auth = (configuration.username, configuration.password.get_secret_value())
 
     headers = {"Accept": "application/json"}
-    response = requests.request("GET", url, headers=headers, auth=HTTPBasicAuth(*auth))
+    response = requests.request("GET", url, headers=headers, auth=HTTPBasicAuth(*auth), timeout=60)
 
     users = json.loads(response.text)
     if users["users"]["users"]:
@@ -86,7 +86,7 @@ def get_cloud_user_account_id_by_email(configuration: JiraConfiguration, user_em
     url = (
         f"{configuration.api_url}/rest/api/2/{endpoint}?query={configuration.username}&maxResults=1"
     )
-    response = requests.request("GET", url, headers=headers, auth=HTTPBasicAuth(*auth))
+    response = requests.request("GET", url, headers=headers, auth=HTTPBasicAuth(*auth), timeout=60)
     users = json.loads(response.text)
     return users["users"]["users"][0]["accountId"]
 
